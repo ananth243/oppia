@@ -731,7 +731,7 @@ def fix_third_party_imports() -> None:
     # Google Cloud SDK comes with certain packages preinstalled including
     # webapp2, jinja2, and pyyaml so this function makes sure that those
     # libraries are installed.
-    import dev_appserver
+    import dev_appserver # pylint: disable=import-outside-toplevel
     dev_appserver.fix_sys_path()
     # In the process of migrating Oppia from Python 2 to Python 3, we are using
     # both google app engine apis that are contained in the Google Cloud SDK

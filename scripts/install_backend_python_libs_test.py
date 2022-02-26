@@ -33,6 +33,7 @@ from scripts import common
 from scripts import install_backend_python_libs
 from scripts import scripts_test_utils
 
+import pip
 import pkg_resources
 
 
@@ -165,7 +166,6 @@ class InstallBackendPythonLibsTests(test_utils.GenericTestBase):
         return 'git+git://github.com/oppia/%s@%s' % (name, sha1)
 
     def test_wrong_pip_version_raises_import_error(self):
-        import pip
 
         with self.swap_Popen, self.swap(pip, '__version__', '21.1.0'):
             install_backend_python_libs.verify_pip_is_installed()
@@ -178,7 +178,6 @@ class InstallBackendPythonLibsTests(test_utils.GenericTestBase):
         ])
 
     def test_correct_pip_version_does_nothing(self):
-        import pip
 
         with self.swap_check_call, self.swap(
                 pip, '__version__',
@@ -692,7 +691,6 @@ class InstallBackendPythonLibsTests(test_utils.GenericTestBase):
     def test_pip_install_with_import_error_and_darwin_os(self):
         os_name_swap = self.swap(common, 'OS_NAME', 'Darwin')
 
-        import pip
         try:
             sys.modules['pip'] = None
             with os_name_swap, self.print_swap, self.swap_check_call:
@@ -712,7 +710,6 @@ class InstallBackendPythonLibsTests(test_utils.GenericTestBase):
     def test_pip_install_with_import_error_and_linux_os(self):
         os_name_swap = self.swap(common, 'OS_NAME', 'Linux')
 
-        import pip
         try:
             sys.modules['pip'] = None
             with os_name_swap, self.print_swap, self.swap_check_call:
@@ -731,7 +728,6 @@ class InstallBackendPythonLibsTests(test_utils.GenericTestBase):
 
     def test_pip_install_with_import_error_and_windows_os(self):
         os_name_swap = self.swap(common, 'OS_NAME', 'Windows')
-        import pip
         try:
             sys.modules['pip'] = None
             with os_name_swap, self.print_swap, self.swap_check_call:

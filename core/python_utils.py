@@ -30,6 +30,18 @@ _CERTIFI_PATH = os.path.join(
     os.getcwd(), '..', 'oppia_tools', 'certifi-2021.10.8')
 sys.path.insert(0, _CERTIFI_PATH)
 
+if sys.version_info[0] == 3:
+    from contextlib import redirect_stdout as redirect  # pylint: disable=import-only-modules
+    import urllib.parse as urlparse
+    from xmlrpc.server import SimpleXMLRPCServer as impl  # pylint: disable=import-only-modules
+
+    from xmlrpc.server import SimpleXMLRPCRequestHandler  # isort:skip pylint: disable=import-only-modules
+else:
+    from contextlib2 import redirect_stdout as impl  # pylint: disable=import-only-modules
+    from SimpleXMLRPCServer import SimpleXMLRPCServer as impl  # pylint: disable=import-only-modules
+    from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler  # isort:skip pylint: disable=import-only-modules
+    import urllib as urlparse
+
 import builtins  # isort:skip  pylint: disable=wrong-import-position, wrong-import-order
 
 
@@ -62,15 +74,7 @@ def SimpleXMLRPCServer( # pylint: disable=invalid-name
     Returns:
         SimpleXMLRPCServer. The SimpleXMLRPCServer object.
     """
-    try:
-        from xmlrpc.server import SimpleXMLRPCServer as impl  # pylint: disable=import-only-modules
-    except ImportError:
-        from SimpleXMLRPCServer import SimpleXMLRPCServer as impl  # pylint: disable=import-only-modules
     if requestHandler is None:
-        try:
-            from xmlrpc.server import SimpleXMLRPCRequestHandler  # isort:skip pylint: disable=import-only-modules
-        except ImportError:
-            from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler  # isort:skip pylint: disable=import-only-modules
         requestHandler = SimpleXMLRPCRequestHandler
     return impl(
         addr, requestHandler=requestHandler, logRequests=logRequests,
@@ -90,11 +94,7 @@ def redirect_stdout(new_target):
         contextlib.redirect_stdout or contextlib2.redirect_stdout. The
         redirect_stdout object.
     """
-    try:
-        from contextlib import redirect_stdout as impl  # pylint: disable=import-only-modules
-    except ImportError:
-        from contextlib2 import redirect_stdout as impl  # pylint: disable=import-only-modules
-    return impl(new_target)
+    return redirect(new_target)
 
 
 def get_args_of_function_node(function_node, args_to_ignore):
@@ -153,10 +153,6 @@ def url_quote(content):
     Returns:
         str. The quoted string.
     """
-    try:
-        import urllib.parse as urlparse
-    except ImportError:
-        import urllib as urlparse
     return urlparse.quote(content)
 
 
@@ -173,10 +169,6 @@ def url_encode(query, doseq=False):
     Returns:
         str. The 'url-encoded' string.
     """
-    try:
-        import urllib.parse as urlparse
-    except ImportError:
-        import urllib as urlparse
     return urlparse.urlencode(query, doseq=doseq)
 
 

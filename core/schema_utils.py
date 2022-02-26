@@ -35,6 +35,7 @@ from core import utils
 from core.constants import constants
 from core.domain import expression_parser
 from core.domain import html_cleaner
+from core.domain import object_registry
 from core.domain import user_domain
 
 from typing import Any, Callable, Dict, List, Optional, cast
@@ -109,7 +110,6 @@ def normalize_against_schema(
         # Importing this at the top of the file causes a circular dependency.
         # TODO(sll): Either get rid of custom objects or find a way to merge
         # them into the schema framework -- probably the latter.
-        from core.domain import object_registry
         obj_class = object_registry.Registry.get_object_class_by_type( # type: ignore[no-untyped-call]
             schema[SCHEMA_KEY_OBJ_TYPE])
         if not apply_custom_validators:

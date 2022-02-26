@@ -414,7 +414,10 @@ def verify_pip_is_installed():
     """
     print('Checking if pip is installed on the local machine')
     try:
-        import pip
+        # Disable import-outside-toplevel
+        # because this is a local import
+        # this is a test for import error.
+        import pip # pylint: disable=import-outside-toplevel
     except ImportError as e:
         common.print_each_string_after_two_new_lines([
             'Pip is required to install Oppia dependencies, but pip wasn\'t '

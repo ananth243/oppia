@@ -36,6 +36,8 @@ from core import constants
 from core import utils
 from core.tests import test_utils
 
+from google.cloud import tasks_v2  # pylint: disable=unused-import
+
 from . import common
 
 _PARENT_DIR = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
@@ -792,7 +794,6 @@ class CommonTests(test_utils.GenericTestBase):
     def test_fix_third_party_imports_correctly_sets_up_imports(self):
         common.fix_third_party_imports()
         # Asserts that imports from problematic modules do not error.
-        from google.cloud import tasks_v2  # pylint: disable=unused-import
 
     def test_cd(self):
         def mock_chdir(unused_path):

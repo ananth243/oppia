@@ -23,6 +23,50 @@ from types import ModuleType  # pylint: disable=import-only-modules
 
 from core import feconf
 from core.constants import constants
+from core.platform.app_identity import gae_app_identity_services
+from core.platform.auth import firebase_auth_services
+from core.platform.bulk_email import dev_mode_bulk_email_services
+from core.platform.bulk_email import mailchimp_bulk_email_services
+from core.platform.cache import redis_cache_services
+from core.platform.datastore import cloud_datastore_services
+from core.platform.email import dev_mode_email_services
+from core.platform.email import mailgun_email_services
+from core.platform.search import elastic_search_services
+from core.platform.storage import cloud_storage_services
+from core.platform.storage import dev_mode_storage_services
+from core.platform.taskqueue import cloud_taskqueue_services
+from core.platform.taskqueue import dev_mode_taskqueue_services
+from core.platform.transactions import cloud_transaction_services
+from core.platform.translate import cloud_translate_services
+from core.platform.translate import dev_mode_translate_services
+# Storage model modules.
+from core.storage.activity import gae_models as activity_models
+from core.storage.app_feedback_report import (
+    gae_models as app_feedback_report_models)
+from core.storage.audit import gae_models as audit_models
+from core.storage.auth import gae_models as auth_models
+from core.storage.base_model import gae_models as base_model
+from core.storage.beam_job import gae_models as beam_job_models
+from core.storage.blog import gae_models as blog_models
+from core.storage.classifier import gae_models as classifier_models
+from core.storage.collection import gae_models as collection_models
+from core.storage.config import gae_models as config_models
+from core.storage.email import gae_models as email_models
+from core.storage.exploration import gae_models as exp_models
+from core.storage.feedback import gae_models as feedback_models
+from core.storage.improvements import gae_models as improvements_models
+from core.storage.job import gae_models as job_models
+from core.storage.opportunity import gae_models as opportunity_models
+from core.storage.question import gae_models as question_models
+from core.storage.recommendations import gae_models as recommendations_models
+from core.storage.skill import gae_models as skill_models
+from core.storage.statistics import gae_models as statistics_models
+from core.storage.story import gae_models as story_models
+from core.storage.subtopic import gae_models as subtopic_models
+from core.storage.suggestion import gae_models as suggestion_models
+from core.storage.topic import gae_models as topic_models
+from core.storage.translation import gae_models as translation_models
+from core.storage.user import gae_models as user_models
 
 from typing import List, Tuple, Type
 
@@ -93,95 +137,59 @@ class _Gae(Platform):
         # separate imports for mypy anyway.
         for name in model_names:
             if name == NAMES.activity:
-                from core.storage.activity import gae_models as activity_models
                 returned_models.append(activity_models)
             elif name == NAMES.app_feedback_report:
-                from core.storage.app_feedback_report import (
-                    gae_models as app_feedback_report_models)
                 returned_models.append(app_feedback_report_models)
             elif name == NAMES.audit:
-                from core.storage.audit import gae_models as audit_models
                 returned_models.append(audit_models)
             elif name == NAMES.auth:
-                from core.storage.auth import gae_models as auth_models
                 returned_models.append(auth_models)
             elif name == NAMES.base_model:
-                from core.storage.base_model import gae_models as base_model
                 returned_models.append(base_model)
             elif name == NAMES.beam_job:
-                from core.storage.beam_job import gae_models as beam_job_models
                 returned_models.append(beam_job_models)
             elif name == NAMES.blog:
-                from core.storage.blog import gae_models as blog_models
                 returned_models.append(blog_models)
             elif name == NAMES.classifier:
-                from core.storage.classifier import (
-                    gae_models as classifier_models)
                 returned_models.append(classifier_models)
             elif name == NAMES.collection:
-                from core.storage.collection import (
-                    gae_models as collection_models)
                 returned_models.append(collection_models)
             elif name == NAMES.config:
-                from core.storage.config import gae_models as config_models
                 returned_models.append(config_models)
             elif name == NAMES.email:
-                from core.storage.email import gae_models as email_models
                 returned_models.append(email_models)
             elif name == NAMES.exploration:
-                from core.storage.exploration import gae_models as exp_models
                 returned_models.append(exp_models)
             elif name == NAMES.feedback:
-                from core.storage.feedback import gae_models as feedback_models
                 returned_models.append(feedback_models)
             elif name == NAMES.improvements:
-                from core.storage.improvements import (
-                    gae_models as improvements_models)
                 returned_models.append(improvements_models)
             elif name == NAMES.job:
-                from core.storage.job import gae_models as job_models
                 returned_models.append(job_models)
             elif name == NAMES.opportunity:
-                from core.storage.opportunity import (
-                    gae_models as opportunity_models)
                 returned_models.append(opportunity_models)
             elif name == NAMES.question:
-                from core.storage.question import gae_models as question_models
                 returned_models.append(question_models)
             elif name == NAMES.recommendations:
-                from core.storage.recommendations import (
-                    gae_models as recommendations_models)
                 returned_models.append(recommendations_models)
             elif name == NAMES.skill:
-                from core.storage.skill import gae_models as skill_models
                 returned_models.append(skill_models)
             elif name == NAMES.statistics:
-                from core.storage.statistics import (
-                    gae_models as statistics_models)
                 returned_models.append(statistics_models)
             elif name == NAMES.story:
-                from core.storage.story import gae_models as story_models
                 returned_models.append(story_models)
             elif name == NAMES.subtopic:
-                from core.storage.subtopic import gae_models as subtopic_models
                 returned_models.append(subtopic_models)
             elif name == NAMES.suggestion:
-                from core.storage.suggestion import (
-                    gae_models as suggestion_models)
                 returned_models.append(suggestion_models)
             elif name == NAMES.topic:
-                from core.storage.topic import gae_models as topic_models
                 returned_models.append(topic_models)
             elif name == NAMES.translation:
-                from core.storage.translation import (
-                    gae_models as translation_models)
                 returned_models.append(translation_models)
             elif name == NAMES.user:
-                from core.storage.user import gae_models as user_models
                 returned_models.append(user_models)
             else:
                 raise Exception('Invalid model name: %s' % name)
-
         return tuple(returned_models)
 
     @classmethod
@@ -229,7 +237,6 @@ class _Gae(Platform):
         Returns:
             module. The firebase_auth_services module.
         """
-        from core.platform.auth import firebase_auth_services
         return firebase_auth_services
 
     @classmethod
@@ -239,7 +246,6 @@ class _Gae(Platform):
         Returns:
             module. The gae_transaction_services module.
         """
-        from core.platform.transactions import cloud_transaction_services
         return cloud_transaction_services
 
     @classmethod
@@ -249,7 +255,6 @@ class _Gae(Platform):
         Returns:
             module. The gae_datastore_services module.
         """
-        from core.platform.datastore import cloud_datastore_services
         return cloud_datastore_services
 
     @classmethod
@@ -259,7 +264,6 @@ class _Gae(Platform):
         Returns:
             module. The gae_app_identity_services module.
         """
-        from core.platform.app_identity import gae_app_identity_services
         return gae_app_identity_services
 
     @classmethod
@@ -276,12 +280,10 @@ class _Gae(Platform):
                 correspond to a valid email_services module.
         """
         if constants.DEV_MODE:
-            from core.platform.email import dev_mode_email_services
             return dev_mode_email_services
         elif (
                 feconf.EMAIL_SERVICE_PROVIDER ==
                 feconf.EMAIL_SERVICE_PROVIDER_MAILGUN):
-            from core.platform.email import mailgun_email_services
             return mailgun_email_services
         else:
             raise Exception(
@@ -302,12 +304,10 @@ class _Gae(Platform):
                 correspond to a valid email_services module.
         """
         if constants.EMULATOR_MODE:
-            from core.platform.bulk_email import dev_mode_bulk_email_services
             return dev_mode_bulk_email_services
         elif (
                 feconf.BULK_EMAIL_SERVICE_PROVIDER ==
                 feconf.BULK_EMAIL_SERVICE_PROVIDER_MAILCHIMP):
-            from core.platform.bulk_email import mailchimp_bulk_email_services
             return mailchimp_bulk_email_services
         else:
             raise Exception(
@@ -321,7 +321,6 @@ class _Gae(Platform):
         Returns:
             module. The core.platform.cache services module.
         """
-        from core.platform.cache import redis_cache_services
         return redis_cache_services
 
     @classmethod
@@ -333,10 +332,8 @@ class _Gae(Platform):
             module. The core.platform.taskqueue services module.
         """
         if constants.EMULATOR_MODE:
-            from core.platform.taskqueue import dev_mode_taskqueue_services
             return dev_mode_taskqueue_services
         else:
-            from core.platform.taskqueue import cloud_taskqueue_services
             return cloud_taskqueue_services
 
     @classmethod
@@ -346,7 +343,6 @@ class _Gae(Platform):
         Returns:
             module. The gae_search_services module.
         """
-        from core.platform.search import elastic_search_services
         return elastic_search_services
 
     @classmethod
@@ -357,10 +353,8 @@ class _Gae(Platform):
             module. The cloud_translate_services module.
         """
         if constants.EMULATOR_MODE:
-            from core.platform.translate import dev_mode_translate_services
             return dev_mode_translate_services
         else:
-            from core.platform.translate import cloud_translate_services
             return cloud_translate_services
 
     @classmethod
@@ -371,10 +365,8 @@ class _Gae(Platform):
             module. The cloud_translate_services module.
         """
         if constants.EMULATOR_MODE:
-            from core.platform.storage import dev_mode_storage_services
             return dev_mode_storage_services
         else:
-            from core.platform.storage import cloud_storage_services
             return cloud_storage_services
 
     NAME = 'gae'

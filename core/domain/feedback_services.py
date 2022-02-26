@@ -23,6 +23,7 @@ import itertools
 
 from core import feconf
 from core.domain import email_manager
+from core.domain import event_services
 from core.domain import feedback_domain
 from core.domain import rights_manager
 from core.domain import subscription_services
@@ -200,7 +201,6 @@ def create_messages(
         Exception. Thread_ids must be distinct.
         Exception. One or more GeneralFeedbackThreadModel entities not found.
     """
-    from core.domain import event_services
 
     # Check that the thread_ids are distinct.
     if len(set(thread_ids)) != len(thread_ids):

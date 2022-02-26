@@ -24,6 +24,8 @@ from core import feconf
 from core import utils
 from core.constants import constants
 from core.domain import activity_services
+from core.domain import collection_services
+from core.domain import exp_services
 from core.domain import rights_domain
 from core.domain import role_services
 from core.domain import subscription_services
@@ -115,7 +117,6 @@ def _update_exploration_summary(activity_rights):
             activity.
     """
     # TODO(msl): Get rid of inline imports by refactoring code.
-    from core.domain import exp_services
     exp_services.regenerate_exploration_and_contributors_summaries(
         activity_rights.id)
 
@@ -130,7 +131,6 @@ def _update_collection_summary(activity_rights):
         activity_rights: ActivityRights. The rights object for the given
             activity.
     """
-    from core.domain import collection_services
     collection_services.regenerate_collection_and_contributors_summaries(
         activity_rights.id)
 

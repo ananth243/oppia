@@ -59,7 +59,10 @@ class InstallThirdPartyLibsImportTests(test_utils.GenericTestBase):
             return False
         exists_swap = self.swap(os.path, 'exists', mock_exists)
         with self.Popen_swap, self.check_call_swap, exists_swap:
-            from scripts import install_third_party_libs  # isort:skip pylint: disable=unused-import,line-too-long
+            # Disable import-outside-toplevel
+            # because this is a local import
+            # as this is a test for import error.
+            from scripts import install_third_party_libs  # isort:skip pylint: disable=unused-import,line-too-long, import-outside-toplevel
         self.assertEqual(
             self.commands, [
                 sys.executable, '-m', 'pip', 'install', 'pyyaml==6.0',
